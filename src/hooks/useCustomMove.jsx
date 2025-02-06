@@ -22,14 +22,16 @@ const useCustomMove = () => {
   const queryDefault = createSearchParams({ page, size }).toString();
 
   const moveToList = (pageParam) => {
-    //pageParam 안줘도 되는건가.. ??
     let queryStr = "";
 
-    if (pageStr) {
+    if (pageParam) {
       const pageNum = getNum(pageParam.page, 1);
       const sizeNum = getNum(pageParam.size, 10);
 
-      queryStr = createSearchParams({ page: pageNum, size: sizeNum }).toString;
+      queryStr = createSearchParams({
+        page: pageNum,
+        size: sizeNum,
+      }).toString();
     } else {
       queryStr = queryDefault;
     }
