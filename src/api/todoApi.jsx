@@ -17,3 +17,10 @@ export const getList = async (pageParam) => {
 
   return res.data;
 };
+
+export const postAdd = async (todoObj) => {
+  // JSON.stringfy(obj) => JSON문자열
+  const res = await axios.post(`${prefix}/`, todoObj);
+
+  return res.data;
+};
