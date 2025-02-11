@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 const Loading = <div className="bg-red-700">Loading....</div>;
 const ProductList = lazy(() => import("../pages/products/ListPage"));
 
-const ProductAdd = lazy(() => import("../pages/products/AddPAge"));
+const ProductAdd = lazy(() => import("../pages/products/AddPage"));
 
 const productsRouter = () => {
   return [
