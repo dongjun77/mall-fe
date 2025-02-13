@@ -1,4 +1,4 @@
-import { Children, Suspense, lazy } from "react";
+import { children, Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import todoRouter from "./todoRouter";
 import productsRouter from "./productsRouter";
