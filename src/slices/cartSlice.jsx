@@ -1,5 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getCartItems, postChangeCart } from "../api/cartApi";
+
+const initState = [];
 
 export const getCartItemsAsync = createAsyncThunk("getCartItemsAsync", () => {
   return getCartItems();
@@ -11,8 +13,6 @@ export const postChangeCartAsync = createAsyncThunk(
     return postChangeCart(param);
   }
 );
-
-const initState = [];
 
 const cartSlice = createSlice({
   name: "cartSlice",
