@@ -27,7 +27,7 @@ const cartSlice = createSlice({
       })
       .addCase(postChangeCartAsync.fulfilled, (state, action) => {
         console.log("postChangeCartAsync.fulfilled");
-        console.log(action.payload);
+        console.log(action);
 
         return action.payload;
       });
