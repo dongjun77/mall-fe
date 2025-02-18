@@ -2,8 +2,6 @@ import React from "react";
 import { getKakaoLoginLink } from "../../api/kakaoApi";
 import { Link } from "react-router-dom";
 
-const link = getKakaoLoginLink();
-
 const KakaoLoginComponent = () => {
   const link = getKakaoLoginLink();
   return (
