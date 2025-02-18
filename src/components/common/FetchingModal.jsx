@@ -12,7 +12,7 @@ center justify-center bg-black bg-opacity-20`}
       >
         <div className="text-4xl font-extrabold text-orange-400 m-20">
           Loading.....
-        </div>  
+        </div>
       </div>
     </div>
   );

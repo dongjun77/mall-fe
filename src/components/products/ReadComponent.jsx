@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { API_SERVER_HOST } from "../../api/todoApi";
 import { getOne } from "../../api/productApi";
 import FetchingModal from "../common/FetchingModal";
 import useCustomMove from "../../hooks/useCustomMove";
 import useCustomCart from "../../hooks/useCustomCart";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { useQuery } from "@tanstack/react-query";
 
 const initState = {
   pno: 0,
@@ -17,23 +18,20 @@ const initState = {
 const host = API_SERVER_HOST;
 
 const ReadComponent = ({ pno }) => {
-  const [product, setProduct] = useState(initState);
-  const [fetching, setFetching] = useState(false);
-
   const { moveToList, moveToModify, page, size } = useCustomMove();
 
   const { cartItems, changeCart } = useCustomCart();
 
   const { loginState } = useCustomLogin();
 
-  useEffect(() => {
-    setFetching(true);
-    getOne(pno).then((data) => {
-      console.log(data);
-      setProduct(data);
-      setFetching(false);
-    });
-  }, [pno]);
+  // v5에서는 파라미터가 객체로 처리 v4까지는 ,로 처리
+  const { data, isFetching } = useQuery({
+    queryKey: ["products", pno],
+    queryFn: () => getOne(pno),
+    staleTime: 1000 * 60, // 10초간 조회하지 않는다. stale = 유통기한
+  });
+
+  const product = data || initState;
 
   const handleClickAddCart = () => {
     let qty = 1;
@@ -54,7 +52,7 @@ const ReadComponent = ({ pno }) => {
 
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {fetching ? <FetchingModal /> : <></>}
+      {isFetching ? <FetchingModal /> : <></>}
       <div className="flex justify-center mt-10">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">PNO</div>
