@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import useCustomCart from "../../hooks/useCustomCart";
 import CartItemComponent from "../cart/CartItemComponent";
