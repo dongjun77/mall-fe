@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { API_SERVER_HOST } from "../../api/todoApi";
 import { getOne } from "../../api/productApi";
 import FetchingModal from "../common/FetchingModal";

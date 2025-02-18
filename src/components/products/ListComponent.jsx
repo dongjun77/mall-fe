@@ -4,6 +4,7 @@ import { getList } from "../../api/productApi";
 import FetchingModal from "../common/FetchingModal";
 import { API_SERVER_HOST } from "../../api/todoApi";
 import PageComponent from "../common/PageComponent";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const initState = {
   dtoList: [],
@@ -23,23 +24,22 @@ const host = API_SERVER_HOST;
 const ListComponent = () => {
   const { moveToList, moveToRead, page, size, refresh } = useCustomMove();
 
-  const [serverData, setServerData] = useState(initState);
+  const { data, isFetching, error, isError } = useQuery({
+    queryKey: ["products/list", { page, size, refresh }], // refresh에서 true, false의 쿼리가 둘다 생긴다
+    // staleTime이 먼저 지난 refresh의 쿼리가 먼저 동작한다
+    queryFn: () => getList({ page, size }),
+    staleTime: 1000 * 100,
+  });
 
-  const [fetching, setFetching] = useState(false);
+  const handleClickPage = (pageParam) => {
+    moveToList(pageParam);
+  };
 
-  useEffect(() => {
-    setFetching(true);
-
-    getList({ page, size }).then((data) => {
-      setFetching(false);
-      setServerData(data);
-    });
-  }, [page, size, refresh]);
+  const serverData = data || initState;
 
   return (
     <div className="border-2 border-blue-100 mt-10 mr-2 ml-2">
-      {fetching ? <FetchingModal /> : <></>}
-
+      {isFetching ? <FetchingModal /> : <></>}
       <div className="flex flex-wrap mx-auto p-6">
         {serverData.dtoList.map((product) => (
           <div
@@ -68,7 +68,7 @@ const ListComponent = () => {
           </div>
         ))}
       </div>
-      <PageComponent serverData={serverData} movePage={moveToList} />
+      <PageComponent serverData={serverData} movePage={handleClickPage} />
     </div>
   );
 };
