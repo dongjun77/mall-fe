@@ -8,18 +8,17 @@ import useCustomLogin from "../../hooks/useCustomLogin";
 const KakaoRedirectPage = () => {
   const [searchParams] = useSearchParams();
 
-  const { moveToPath } = useCustomLogin();
+  const { moveToPath, saveAsCookie } = useCustomLogin();
 
   const authCode = searchParams.get("code");
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     getAccessToken(authCode).then((accessToken) => {
       getMemberWithAccessToken(accessToken).then((memberInfo) => {
         console.log("----------------------------");
         console.log(memberInfo);
-        dispatch(login(memberInfo));
+
+        saveAsCookie(memberInfo);
 
         if (memberInfo && memberInfo.social) {
           moveToPath("/member/modify");
