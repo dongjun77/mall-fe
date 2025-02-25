@@ -16,8 +16,7 @@ const CartComponent = () => {
         <div className="flex flex-col">
           <div className="w-full flex">
             <div className="font-extrabold text-2xl w-4/5">
-              {" "}
-              {loginState.nickname}'s Cart{" "}
+              {loginState.nickname}'s Cart
             </div>
             <div className="bg-orange-600 text-center text-white font-bold w-1/5 rounded-full m-1">
               {cartItems.length}
