@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { getOne } from "../../api/todoApi";
+import { API_SERVER_HOST, getOne } from "../../api/todoApi";
 import useCustomMove from "../../hooks/useCustomMove";
 
 const initState = {
   tno: 0,
   title: "",
-  writer: "",
-  dueDate: "",
+  content: "",
+  memberEmail: "",
   complete: false,
+  dueDate: "",
+  uploadFileNames: [],
 };
+
+const host = API_SERVER_HOST;
 
 const ReadComponent = ({ tno }) => {
   const [todo, setTodo] = useState(initState);
@@ -25,11 +29,23 @@ const ReadComponent = ({ tno }) => {
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
       {makeDiv("Tno", todo.tno)}
-      {makeDiv("Writer", todo.writer)}
       {makeDiv("Title", todo.title)}
+      {makeDiv("memberEmail", todo.memberEmail)}
+      {makeDiv("Content", todo.content)}
       {makeDiv("Due Date", todo.dueDate)}
       {makeDiv("Complete", todo.complete ? "Completed" : "Not Yet")}
+      {/* {makeDiv("uploadFileNames", todo.uploadFileNames)} */}
 
+      <div className="w-full justify-center flex flex-col m-auto items-center">
+        {todo.uploadFileNames.map((imgFile, i) => (
+          <img
+            alt="todo"
+            key={i}
+            className="p-4 w-1/2"
+            src={`${host}/api/todo/view/${imgFile}`}
+          />
+        ))}
+      </div>
       {/* buttons.........start */}
       <div className="flex justify-end p-4">
         <button
