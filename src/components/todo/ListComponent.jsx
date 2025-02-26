@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import useCustomMove from "../../hooks/useCustomMove";
-import { getList } from "../../api/todoApi";
+import { API_SERVER_HOST, getList } from "../../api/todoApi";
 import PageComponent from "../common/PageComponent";
+import {
+  Paper,
+  Typography,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Box,
+} from "@mui/material";
 
 const initState = {
   dtoList: [],
@@ -16,9 +25,10 @@ const initState = {
   current: 0,
 };
 
-const ListComponent = (props) => {
-  const { page, size, refresh, moveToList, moveToRead } = useCustomMove();
+const host = API_SERVER_HOST;
 
+const ListComponent = () => {
+  const { page, size, refresh, moveToList, moveToRead } = useCustomMove();
   const [serverData, setServerData] = useState(initState);
 
   useEffect(() => {
@@ -29,35 +39,76 @@ const ListComponent = (props) => {
   }, [page, size, refresh]);
 
   return (
-    <div className="border-2 border-blue-100 mt-10 mr-2 ml-2">
-      <div className="flex flex-wrap mx-auto justify-center p-6">
+    <Paper elevation={3} sx={{ p: 3, mt: 5, mx: "auto", maxWidth: "900px" }}>
+      <Typography variant="h4" fontWeight="bold" color="primary" sx={{ mb: 2 }}>
+        Todo List
+      </Typography>
+
+      {/* 리스트 아이템 (한 줄씩 표시) */}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {serverData.dtoList.map((todo) => (
-          <div
+          <Card
             key={todo.tno}
-            className="w-full min-w-[400px] p-2 m-2 rounded shadow-md"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              p: 2,
+              cursor: "pointer",
+              boxShadow: 2,
+              borderRadius: 2,
+            }}
             onClick={() => moveToRead(todo.tno)}
           >
-            <div className="flex ">
-              <div className="font-extrabold text-2xl p-2 w-1/12">
-                {" "}
-                {todo.tno}{" "}
-              </div>
-              <div className="text-1xl m-1 p-2 w-8/12 font-extrabold">
-                {todo.title}
-              </div>
-              <div className="text-1xl m-1 p-2 w-2/10 font-medium">
-                {" "}
-                {todo.dueDate}{" "}
-              </div>
-            </div>
-          </div>
+            {/* Tno (번호) */}
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              sx={{ width: "10%", textAlign: "center" }}
+            >
+              {todo.tno}
+            </Typography>
+
+            {/* Title */}
+            <Typography
+              variant="h6"
+              sx={{ width: "40%", fontWeight: "bold", px: 2 }}
+            >
+              {todo.title}
+            </Typography>
+
+            {/* 이미지 */}
+            <Box
+              sx={{ width: "25%", display: "flex", justifyContent: "center" }}
+            >
+              <CardMedia
+                component="img"
+                image={`${host}/api/todo/view/s_${todo.imageFile}`}
+                alt="todo"
+                sx={{
+                  height: 100,
+                  maxWidth: "100%",
+                  objectFit: "contain",
+                  borderRadius: 1,
+                }}
+              />
+            </Box>
+
+            {/* Due Date */}
+            <Typography
+              variant="body1"
+              sx={{ width: "25%", textAlign: "center" }}
+            >
+              {todo.dueDate}
+            </Typography>
+          </Card>
         ))}
-      </div>
-      <PageComponent
-        serverData={serverData}
-        movePage={moveToList}
-      ></PageComponent>
-    </div>
+      </Box>
+
+      {/* 페이지 네이션 */}
+      <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
+        <PageComponent serverData={serverData} movePage={moveToList} />
+      </Box>
+    </Paper>
   );
 };
 

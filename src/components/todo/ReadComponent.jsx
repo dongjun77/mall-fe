@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { API_SERVER_HOST, getOne } from "../../api/todoApi";
 import useCustomMove from "../../hooks/useCustomMove";
+import {
+  Paper,
+  Typography,
+  Button,
+  Box,
+  Grid,
+  Card,
+  CardMedia,
+} from "@mui/material";
 
 const initState = {
   tno: 0,
@@ -16,7 +25,6 @@ const host = API_SERVER_HOST;
 
 const ReadComponent = ({ tno }) => {
   const [todo, setTodo] = useState(initState);
-
   const { moveToList, moveToModify } = useCustomMove();
 
   useEffect(() => {
@@ -27,53 +35,73 @@ const ReadComponent = ({ tno }) => {
   }, [tno]);
 
   return (
-    <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {makeDiv("Tno", todo.tno)}
-      {makeDiv("Title", todo.title)}
-      {makeDiv("memberEmail", todo.memberEmail)}
-      {makeDiv("Content", todo.content)}
-      {makeDiv("Due Date", todo.dueDate)}
-      {makeDiv("Complete", todo.complete ? "Completed" : "Not Yet")}
-      {/* {makeDiv("uploadFileNames", todo.uploadFileNames)} */}
+    <Paper elevation={3} sx={{ p: 4, mx: "auto", maxWidth: "800px" }}>
+      <Typography variant="h4" fontWeight="bold" color="primary" gutterBottom>
+        Todo Details
+      </Typography>
 
-      <div className="w-full justify-center flex flex-col m-auto items-center">
-        {todo.uploadFileNames.map((imgFile, i) => (
-          <img
-            alt="todo"
-            key={i}
-            className="p-4 w-1/2"
-            src={`${host}/api/todo/view/${imgFile}`}
-          />
-        ))}
-      </div>
-      {/* buttons.........start */}
-      <div className="flex justify-end p-4">
-        <button
-          type="button"
-          className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
-          onClick={() => moveToList()}
+      <Grid container spacing={2}>
+        {makeInfo("Tno", todo.tno)}
+        {makeInfo("Title", todo.title)}
+        {makeInfo("Member Email", todo.memberEmail)}
+        {makeInfo("Content", todo.content)}
+        {makeInfo("Due Date", todo.dueDate)}
+        {makeInfo("Complete", todo.complete ? "Completed" : "Not Yet")}
+      </Grid>
+
+      {/* 이미지 리스트 */}
+      {todo.uploadFileNames.length > 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            mt: 3,
+          }}
+        >
+          {todo.uploadFileNames.map((imgFile, i) => (
+            <Card key={i} sx={{ maxWidth: 300, m: 1 }}>
+              <CardMedia
+                component="img"
+                image={`${host}/api/todo/view/${imgFile}`}
+                alt="todo"
+                sx={{ height: 200 }}
+              />
+            </Card>
+          ))}
+        </Box>
+      )}
+
+      {/* 버튼 영역 */}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={moveToList}
+          sx={{ mr: 2 }}
         >
           List
-        </button>
-        <button
-          type="button"
-          className="rounded p-4 m-2 text-xl w-32 text-white bg-red-500"
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
           onClick={() => moveToModify(todo.tno)}
         >
           Modify
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Box>
+    </Paper>
   );
 };
-const makeDiv = (title, value) => (
-  <div className="flex justify-center">
-    <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-      <div className="w-1/5 p-6 text-right font-bold">{title}</div>
-      <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
-        {value}
-      </div>
-    </div>
-  </div>
+
+// ✅ `makeDiv`를 `Grid` 기반 `makeInfo`로 변경
+const makeInfo = (label, value) => (
+  <Grid item xs={12} sm={12} key={label}>
+    <Typography variant="subtitle1" fontWeight="bold" color="textSecondary">
+      {label}
+    </Typography>
+    <Typography variant="body1">{value}</Typography>
+  </Grid>
 );
+
 export default ReadComponent;

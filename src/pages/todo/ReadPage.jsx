@@ -7,21 +7,9 @@ function ReadPage() {
   const { tno } = useParams();
 
   return (
-    <Container maxWidth="md" sx={{ mt: 6 }}>
-      <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
-        <Typography variant="h4" fontWeight="bold" color="primary" gutterBottom>
-          Todo Read Page
-        </Typography>
-
-        <Typography variant="h6" color="textSecondary">
-          {`Todo Number: ${tno}`}
-        </Typography>
-
-        <Box sx={{ mt: 4 }}>
-          <ReadComponent tno={tno} />
-        </Box>
-      </Paper>
-    </Container>
+    <div>
+      <ReadComponent tno={tno} />
+    </div>
   );
 }
 
