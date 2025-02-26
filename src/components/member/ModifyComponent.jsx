@@ -4,6 +4,15 @@ import useCustomLogin from "../../hooks/useCustomLogin";
 import ResultModal from "../common/ResultModal";
 import { useRecoilState } from "recoil";
 import { signinState } from "../../atoms/signinState";
+import {
+  Container,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Grid,
+} from "@mui/material";
 
 const initState = {
   email: "",
@@ -13,11 +22,8 @@ const initState = {
 
 const ModifyComponent = () => {
   const [member, setMember] = useState(initState);
-
   const [loginInfo, setLoginInfo] = useRecoilState(signinState);
-
   const { moveToPath } = useCustomLogin();
-
   const [result, setResult] = useState();
 
   useEffect(() => {
@@ -25,13 +31,11 @@ const ModifyComponent = () => {
   }, [loginInfo]);
 
   const handleChange = (e) => {
-    member[e.target.name] = e.target.value;
-
-    setMember({ ...member });
+    setMember({ ...member, [e.target.name]: e.target.value });
   };
 
   const handleClickModify = () => {
-    modifyMember(member).then((result) => {
+    modifyMember(member).then(() => {
       setResult("Modified");
     });
   };
@@ -42,65 +46,71 @@ const ModifyComponent = () => {
   };
 
   return (
-    <div className="mt-6">
-      {result ? (
+    <Container maxWidth="sm"
+    >
+      {result && (
         <ResultModal
           callbackFn={closeModal}
-          title={"회원정보수정"}
-          content={"정보수정완료"}
-        ></ResultModal>
-      ) : (
-        <></>
+          title="회원정보 수정"
+          content="정보 수정 완료"
+        />
       )}
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-1/5 p-6 text-right font-bold">Email</div>
-          <input
-            className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-            name="email"
-            type={"text"}
-            value={member.email}
-            readOnly
-          ></input>
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-1/5 p-6 text-right font-bold">Password</div>
-          <input
-            className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-            name="pw"
-            type={"password"}
-            value={member.pw}
-            onChange={handleChange}
-          ></input>
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-1/5 p-6 text-right font-bold">Nickname</div>
-          <input
-            className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-            name="nickname"
-            type={"text"}
-            value={member.nickname}
-            onChange={handleChange}
-          ></input>
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap justify-end">
-          <button
-            type="button"
-            className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
-            onClick={() => handleClickModify()}
-          >
-            {" "}
-            Modify{" "}
-          </button>
-        </div>
-      </div>
-    </div>
+
+      <Paper elevation={3} sx={{ p: 4, mt: 5, textAlign: "center" }}>
+        <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom>
+          회원정보 수정
+        </Typography>
+
+        <Box component="form" sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Email"
+                name="email"
+                variant="outlined"
+                value={member.email}
+                InputProps={{ readOnly: true }}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Password"
+                name="pw"
+                type="password"
+                variant="outlined"
+                value={member.pw}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Nickname"
+                name="nickname"
+                variant="outlined"
+                value={member.nickname}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12} display="flex" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ fontSize: "1rem", p: 1.5 }}
+                onClick={handleClickModify}
+              >
+                Modify
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

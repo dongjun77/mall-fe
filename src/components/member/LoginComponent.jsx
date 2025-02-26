@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Paper, Typography, TextField, Button, Box, Grid } from "@mui/material";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import KakaoLoginComponent from "./KakaoLoginComponent";
 
@@ -7,18 +8,15 @@ const initState = {
   pw: "",
 };
 
-const LoginComponent = (props) => {
+const LoginComponent = () => {
   const [loginParam, setLoginParam] = useState({ ...initState });
-
   const { doLogin, moveToPath } = useCustomLogin();
 
   const handleChange = (e) => {
-    loginParam[e.target.name] = e.target.value;
-
-    setLoginParam({ ...loginParam });
+    setLoginParam({ ...loginParam, [e.target.name]: e.target.value });
   };
 
-  const handleClickLogin = (e) => {
+  const handleClickLogin = () => {
     doLogin(loginParam).then((data) => {
       if (data.error) {
         alert("이메일과 패스워드를 확인해 주세요");
@@ -29,50 +27,51 @@ const LoginComponent = (props) => {
   };
 
   return (
-    <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      <div className="flex justify-center">
-        <div className="text-4xl m-4 p-4 font-extrabold text-blue-500">
-          Login Component
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-full p-6 text-left font-bold">Email</div>
-          <input
-            className="w-full p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+    <Container maxWidth="sm">
+      <Paper elevation={3} sx={{ p: 4, mt: 5, textAlign: "center" }}>
+        <Typography variant="h4" color="primary" fontWeight="bold" gutterBottom>
+          Login
+        </Typography>
+
+        <Box component="form" sx={{ mt: 3 }}>
+          <TextField
+            fullWidth
+            label="Email"
             name="email"
-            type={"text"}
+            variant="outlined"
             value={loginParam.email}
             onChange={handleChange}
+            margin="normal"
           />
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-full p-6 text-left font-bold">Password</div>
-          <input
-            className="w-full p-6 rounded-r border border-solid border-neutral-500 shadow-md"
+
+          <TextField
+            fullWidth
+            label="Password"
             name="pw"
-            type={"password"}
+            type="password"
+            variant="outlined"
             value={loginParam.pw}
             onChange={handleChange}
+            margin="normal"
           />
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full justify-center">
-          <div className="w-2/5 p-6 flex justify-center font-bold">
-            <button
-              className="rounded p-4 w-36 bg-blue-500 text-xl text-white"
+
+          <Grid container justifyContent="center" sx={{ mt: 3 }}>
+            <Button
+              variant="contained"
+              color="primary"
               onClick={handleClickLogin}
+              sx={{ width: "50%", fontSize: "1.2rem", p: 1 }}
             >
               LOGIN
-            </button>
-          </div>
-        </div>
-      </div>
-      <KakaoLoginComponent />
-    </div>
+            </Button>
+          </Grid>
+        </Box>
+
+        <Box sx={{ mt: 3 }}>
+          <KakaoLoginComponent />
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
