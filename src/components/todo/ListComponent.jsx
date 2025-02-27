@@ -11,6 +11,8 @@ import {
   CardContent,
   Box,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import FetchingModal from "../common/FetchingModal";
 
 const initState = {
   dtoList: [],
@@ -29,22 +31,23 @@ const host = API_SERVER_HOST;
 
 const ListComponent = () => {
   const { page, size, refresh, moveToList, moveToRead } = useCustomMove();
-  const [serverData, setServerData] = useState(initState);
 
-  useEffect(() => {
-    getList({ page, size }).then((data) => {
-      console.log(data);
-      setServerData(data);
-    });
-  }, [page, size, refresh]);
+  const { data, isFetching, error, isError } = useQuery({
+    queryKey: ["todo/list", { page, size, refresh }],
+    queryFn: () => getList({ page, size }),
+    staleTime: 1000 * 100,
+  });
+
+  
+
+  const serverData = data || initState;
 
   return (
     <Paper elevation={3} sx={{ p: 3, mt: 5, mx: "auto", maxWidth: "900px" }}>
+      {isFetching ? <FetchingModal /> : <></>}
       <Typography variant="h4" fontWeight="bold" color="primary" sx={{ mb: 2 }}>
         Todo List
       </Typography>
-
-      {/* 리스트 아이템 (한 줄씩 표시) */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {serverData.dtoList.map((todo) => (
           <Card
@@ -59,7 +62,6 @@ const ListComponent = () => {
             }}
             onClick={() => moveToRead(todo.tno)}
           >
-            {/* Tno (번호) */}
             <Typography
               variant="h6"
               fontWeight="bold"
@@ -68,15 +70,12 @@ const ListComponent = () => {
               {todo.tno}
             </Typography>
 
-            {/* Title */}
             <Typography
               variant="h6"
               sx={{ width: "40%", fontWeight: "bold", px: 2 }}
             >
               {todo.title}
             </Typography>
-
-            {/* 이미지 */}
             <Box
               sx={{ width: "25%", display: "flex", justifyContent: "center" }}
             >
@@ -92,8 +91,6 @@ const ListComponent = () => {
                 }}
               />
             </Box>
-
-            {/* Due Date */}
             <Typography
               variant="body1"
               sx={{ width: "25%", textAlign: "center" }}
@@ -103,8 +100,6 @@ const ListComponent = () => {
           </Card>
         ))}
       </Box>
-
-      {/* 페이지 네이션 */}
       <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
         <PageComponent serverData={serverData} movePage={moveToList} />
       </Box>

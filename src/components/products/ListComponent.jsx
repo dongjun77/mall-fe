@@ -31,16 +31,11 @@ const ListComponent = () => {
     staleTime: 1000 * 100,
   });
 
-  const handleClickPage = (pageParam) => {
-    moveToList(pageParam);
-  };
-
   const serverData = data || initState;
 
   return (
     <div className="border-2 border-blue-100 mt-10 mr-2 ml-2">
-      {isFetching ? <FetchingModal /> : <></>}
-      <div className="flex flex-wrap mx-auto p-6">
+        <div className="flex flex-wrap mx-auto p-6">
         {serverData.dtoList.map((product) => (
           <div
             key={product.pno}
@@ -68,7 +63,7 @@ const ListComponent = () => {
           </div>
         ))}
       </div>
-      <PageComponent serverData={serverData} movePage={handleClickPage} />
+      <PageComponent serverData={serverData} movePage={moveToList} />
     </div>
   );
 };
