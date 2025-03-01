@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
 import ResultModal from "../common/ResultModal";
-import { postAdd } from "../../api/todoApi";
+import { getOne, postAdd } from "../../api/todoApi";
 import useCustomMove from "../../hooks/useCustomMove";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import FetchingModal from "../common/FetchingModal";
+import { useRecoilState } from "recoil";
+import { signinState } from "../../atoms/signinState";
 
 const initState = {
   title: "",
@@ -16,9 +18,11 @@ const initState = {
 const AddComponent = () => {
   const [todo, setTodo] = useState({ ...initState });
 
+  const [loginInfo, setLoginInfo] = useRecoilState(signinState);
+
   const uploadRef = useRef();
 
-  const { moveToList } = useCustomMove();
+  const { moveToList, moveToRead } = useCustomMove();
 
   const addMutation = useMutation({
     mutationFn: (todo) => postAdd(todo),
@@ -44,7 +48,7 @@ const AddComponent = () => {
     formData.append("title", todo.title);
     formData.append("content", todo.title);
     formData.append("dueDate", todo.dueDate);
-    formData.append("memberEmail", "user1@aaa.com");
+    formData.append("memberEmail", loginInfo.email);
 
     console.log(formData);
 
