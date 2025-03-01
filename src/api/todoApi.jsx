@@ -20,7 +20,8 @@ export const getList = async (pageParam) => {
 
 export const postAdd = async (todoObj) => {
   // JSON.stringfy(obj) => JSON문자열
-  const res = await jwtAxios.post(`${prefix}/`, todoObj);
+  const header = { headers: { "Content-Type": "multipart/form-data" } };
+  const res = await jwtAxios.post(`${prefix}/`, todoObj, header);
 
   return res.data;
 };
@@ -31,8 +32,10 @@ export const deleteOne = async (tno) => {
   return res.data;
 };
 
-export const putOne = async (todo) => {
-  const res = await jwtAxios.put(`${prefix}/${todo.tno}`, todo);
+export const putOne = async (tno, todo) => {
+  const header = { headers: { "Content-Type": "multipart/form-data" } };
+
+  const res = await jwtAxios.put(`${prefix}/${tno}`, todo, header);
 
   return res.data;
 };

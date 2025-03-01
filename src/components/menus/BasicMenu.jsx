@@ -1,53 +1,79 @@
 import { Link } from "react-router-dom";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import useCustomLogin from "../../hooks/useCustomLogin";
 
 const BasicMenu = () => {
   const { loginState } = useCustomLogin();
 
-  console.log("loginState.....:");
-  console.log(loginState);
-
   return (
-    <nav id="navbar" className=" flex bg-blue-300">
-      <div className="w-4/5 bg-gray-500">
-        <ul className="flex p-4 text-white font-bold">
-          <li className="pr-6 text-2xl">
-            {" "}
-            <Link to={"/"}>Main</Link>{" "}
-          </li>
-          <li className="pr-6 text-2xl">
-            {" "}
-            <Link to={"/about"}>About</Link>{" "}
-          </li>
+    <AppBar position="static" sx={{ bgcolor: "white", boxShadow: 2 }}>
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        {/* 왼쪽 네비게이션 메뉴 */}
+        <Box sx={{ display: "flex", gap: 3 }}>
+          <Typography
+            variant="h6"
+            component={Link}
+            to="/"
+            sx={{ textDecoration: "none", color: "primary.main" }}
+          >
+            Main
+          </Typography>
+          <Typography
+            variant="h6"
+            component={Link}
+            to="/about"
+            sx={{ textDecoration: "none", color: "primary.main" }}
+          >
+            About
+          </Typography>
 
-          {loginState.email ? (
+          {loginState.email && (
             <>
-              <li className="pr-6 text-2xl">
-                {" "}
-                <Link to={"/todo/"}>Todo</Link>{" "}
-              </li>
-              <li className="pr-6 text-2xl">
-                {" "}
-                <Link to={"/products/"}>Products</Link>{" "}
-              </li>
+              <Typography
+                variant="h6"
+                component={Link}
+                to="/todo"
+                sx={{ textDecoration: "none", color: "primary.main" }}
+              >
+                Todo
+              </Typography>
+              <Typography
+                variant="h6"
+                component={Link}
+                to="/products"
+                sx={{ textDecoration: "none", color: "primary.main" }}
+              >
+                Products
+              </Typography>
             </>
-          ) : (
-            <></>
           )}
-        </ul>
-      </div>
-      <div className="w-1/5 flex justify-end bg-orange-300 p-4 font-medium">
-        {!loginState.email ? (
-          <div className="text-white text-sm m-1 rounded">
-            <Link to={"/member/login"}>Login</Link>
-          </div>
-        ) : (
-          <div className="text-white text-sm m-1 rounded">
-            <Link to={"/member/logout"}>Logout</Link>
-          </div>
-        )}
-      </div>
-    </nav>
+        </Box>
+
+        {/* 로그인/로그아웃 버튼 */}
+        <Box>
+          {!loginState.email ? (
+            <Button
+              component={Link}
+              to="/member/login"
+              variant="contained"
+              color="primary"
+            >
+              Login
+            </Button>
+          ) : (
+            <Button
+              component={Link}
+              to="/member/logout"
+              variant="contained"
+              color="error"
+            >
+              Logout
+            </Button>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
+
 export default BasicMenu;

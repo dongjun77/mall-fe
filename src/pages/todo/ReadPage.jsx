@@ -1,13 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import ReadComponent from "../../components/todo/ReadComponent";
+import { Container, Typography, Paper, Box } from "@mui/material";
 
-function ReadPage(props) {
+function ReadPage() {
   const { tno } = useParams();
 
   return (
-    <div className={"font-extrabold w-full bg-white mt-6"}>
-      <div className={"text-2xl"}>Todo Read Page Component{tno}</div>
+    <div>
       <ReadComponent tno={tno} />
     </div>
   );
