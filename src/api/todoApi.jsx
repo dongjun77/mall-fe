@@ -49,7 +49,11 @@ export const updateComplete = async (tno) => {
 export const getRecentTodo = async () => {
   const res = await jwtAxios.get(`${prefix}/recent`);
 
-  console.log(res.data);
+  return res.data;
+};
+
+export const getDeadlineTodo = async () => {
+  const res = await jwtAxios.get(`${prefix}/deadline`);
 
   return res.data;
 };
