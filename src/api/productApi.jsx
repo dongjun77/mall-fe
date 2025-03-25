@@ -38,3 +38,9 @@ export const putOne = async (pno, product) => {
 
   return res.data;
 };
+
+export const getRecentProducts = async () => {
+  const res = await jwtAxios.get(`${host}/recent`);
+
+  return res.data;
+};

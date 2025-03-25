@@ -15,9 +15,9 @@ const host = API_SERVER_HOST;
 
 const DeadlineTodoComponent = () => {
   const { data, isFetching, error, isError } = useQuery({
-    queryKey: ["todo/deadline"],
+    queryKey: ["todo/recent"],
     queryFn: () => getDeadlineTodo(),
-    staleTime: 1000 * 86400,
+    staleTime: 1000 * 600,
   });
 
   const serverData = data || [];
@@ -26,7 +26,7 @@ const DeadlineTodoComponent = () => {
     <Paper elevation={3} sx={{ p: 3, mt: 5, mx: "auto", maxWidth: "1200px" }}>
       {isFetching ? <FetchingModal /> : null}
       <Typography variant="h4" fontWeight="bold" color="primary" sx={{ mb: 2 }}>
-        마감임박한 Todo
+        마감임박한 TODO
       </Typography>
 
       <Grid container spacing={2}>
