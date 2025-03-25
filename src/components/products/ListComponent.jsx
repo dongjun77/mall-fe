@@ -35,7 +35,7 @@ const ListComponent = () => {
 
   return (
     <div className="border-2 border-blue-100 mt-10 mr-2 ml-2">
-        <div className="flex flex-wrap mx-auto p-6">
+      <div className="flex flex-wrap mx-auto p-6">
         {serverData.dtoList.map((product) => (
           <div
             key={product.pno}
@@ -51,7 +51,7 @@ const ListComponent = () => {
                   <img
                     alt="product"
                     className="m-auto rounded-md w-60"
-                    src={`${host}/api/products/view/s_${product.uploadFileNames[0]}`}
+                    src={`${host}/api/products/view/s_${product.imageFile}`}
                   />
                 </div>
                 <div className="bottom-0 font-extrabold bg-white">
