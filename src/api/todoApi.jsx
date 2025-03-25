@@ -45,3 +45,11 @@ export const updateComplete = async (tno) => {
 
   return res.data;
 };
+
+export const getRecentTodo = async () => {
+  const res = await jwtAxios.get(`${prefix}/recent`);
+
+  console.log(res.data);
+
+  return res.data;
+};

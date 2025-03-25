@@ -6,7 +6,7 @@ import productsRouter from "./productsRouter";
 import memberRouter from "./memberRouter";
 
 const Loading = <div className="bg-red-700">Loading....</div>;
-const Main = lazy(() => import("../pages/MainPage"));
+const Main = lazy(() => import("../pages/main/MainPage"));
 const About = lazy(() => import("../pages/AboutPage"));
 const TodoIndex = lazy(() => import("../pages/todo/IndexPage"));
 const ProductsIndex = lazy(() => import("../pages/products/IndexPage"));
