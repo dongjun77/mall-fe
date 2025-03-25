@@ -12,7 +12,7 @@ function AboutPage(props) {
 
   return (
     <BasicLayout>
-      <div className={"text-3xl"}>About Page</div>
+      <div className={"text-3xl"}>Board Page</div>
     </BasicLayout>
   );
 }

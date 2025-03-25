@@ -94,7 +94,6 @@ const ReadComponent = ({ tno }) => {
   );
 };
 
-// ✅ `makeDiv`를 `Grid` 기반 `makeInfo`로 변경
 const makeInfo = (label, value) => (
   <Grid item xs={12} sm={12} key={label}>
     <Typography variant="subtitle1" fontWeight="bold" color="textSecondary">

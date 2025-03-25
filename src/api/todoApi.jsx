@@ -39,3 +39,9 @@ export const putOne = async (tno, todo) => {
 
   return res.data;
 };
+
+export const updateComplete = async (tno) => {
+  const res = await jwtAxios.put(`${prefix}/${tno}/complete`);
+
+  return res.data;
+};

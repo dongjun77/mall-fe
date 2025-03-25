@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useCustomMove from "../../hooks/useCustomMove";
-import { API_SERVER_HOST, getList } from "../../api/todoApi";
+import { API_SERVER_HOST, getList, updateComplete } from "../../api/todoApi";
 import PageComponent from "../common/PageComponent";
 import {
   Paper,
@@ -10,8 +10,9 @@ import {
   CardMedia,
   CardContent,
   Box,
+  Checkbox,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import FetchingModal from "../common/FetchingModal";
 
 const initState = {
@@ -32,13 +33,25 @@ const host = API_SERVER_HOST;
 const ListComponent = () => {
   const { page, size, refresh, moveToList, moveToRead } = useCustomMove();
 
+  const queryClient = useQueryClient();
+
   const { data, isFetching, error, isError } = useQuery({
     queryKey: ["todo/list", { page, size, refresh }],
     queryFn: () => getList({ page, size }),
     staleTime: 1000 * 100,
   });
 
-  
+  const modifyMutation = useMutation({
+    mutationFn: (tno) => updateComplete(tno),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todo/list"]);
+    },
+  });
+
+  const handleCompleteChange = (e, tno) => {
+    e.stopPropagation();
+    modifyMutation.mutate(tno);
+  };
 
   const serverData = data || initState;
 
@@ -97,6 +110,10 @@ const ListComponent = () => {
             >
               {todo.dueDate}
             </Typography>
+            <Checkbox
+              onChange={(e) => handleCompleteChange(e, todo.tno)}
+              onClick={(e) => e.stopPropagation()}
+            />
           </Card>
         ))}
       </Box>

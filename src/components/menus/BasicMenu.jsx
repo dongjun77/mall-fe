@@ -24,7 +24,7 @@ const BasicMenu = () => {
             to="/about"
             sx={{ textDecoration: "none", color: "primary.main" }}
           >
-            About
+            board
           </Typography>
 
           {loginState.email && (
