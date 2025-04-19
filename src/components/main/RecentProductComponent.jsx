@@ -1,5 +1,5 @@
 import React from "react";
-import { API_SERVER_HOST } from "../../api/todoApi";
+import { API_S3_HOST, API_SERVER_HOST } from "../../api/todoApi";
 import { useQuery } from "@tanstack/react-query";
 import FetchingModal from "../common/FetchingModal";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { getRecentProducts } from "../../api/productApi";
 
-const host = API_SERVER_HOST;
+const s3_prefix = API_S3_HOST;
 
 const DeadlineTodoComponent = () => {
   const { data, isFetching, error, isError } = useQuery({
@@ -44,7 +44,9 @@ const DeadlineTodoComponent = () => {
             >
               <CardMedia
                 component="img"
-                image={`${host}/api/products/view/s_${product.imageFile}`}
+                image={`${s3_prefix}product/s_${
+                  product.imageFile ?? "default.jpeg"
+                }`}
                 sx={{
                   height: 140,
                   objectFit: "cover",

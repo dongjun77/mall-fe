@@ -1,6 +1,8 @@
 import jwtAxios from "../util/jwtUtil";
 
 export const API_SERVER_HOST = "http://localhost:8080";
+export const API_S3_HOST =
+  "https://mall-static-files.s3.ap-northeast-2.amazonaws.com/";
 
 const prefix = `${API_SERVER_HOST}/api/todo`;
 
@@ -13,7 +15,9 @@ export const getOne = async (tno) => {
 export const getList = async (pageParam) => {
   const { page, size } = pageParam;
 
-  const res = await jwtAxios.get(`${prefix}/list`, { params: { page, size } });
+  const res = await jwtAxios.get(`${prefix}/subquerylist`, {
+    params: { page, size },
+  });
 
   return res.data;
 };

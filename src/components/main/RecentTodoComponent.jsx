@@ -1,5 +1,5 @@
 import React from "react";
-import { API_SERVER_HOST, getRecentTodo } from "../../api/todoApi";
+import { API_S3_HOST, getRecentTodo } from "../../api/todoApi";
 import { useQuery } from "@tanstack/react-query";
 import FetchingModal from "../common/FetchingModal";
 import {
@@ -11,7 +11,7 @@ import {
   CardContent,
 } from "@mui/material";
 
-const host = API_SERVER_HOST;
+const s3_prefix = API_S3_HOST;
 
 const RecentProductComponent = () => {
   const { data, isFetching, error, isError } = useQuery({
@@ -43,7 +43,7 @@ const RecentProductComponent = () => {
             >
               <CardMedia
                 component="img"
-                image={`${host}/api/todo/view/s_${todo.imageFile}`}
+                image={`${s3_prefix}todo/s_${todo.imageFile ?? "default.jpeg"}`}
                 alt={todo.title}
                 sx={{
                   height: 140,

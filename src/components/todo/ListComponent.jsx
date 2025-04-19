@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import useCustomMove from "../../hooks/useCustomMove";
-import { API_SERVER_HOST, getList, updateComplete } from "../../api/todoApi";
+import {
+  API_S3_HOST,
+  API_SERVER_HOST,
+  getList,
+  updateComplete,
+} from "../../api/todoApi";
 import PageComponent from "../common/PageComponent";
 import {
   Paper,
@@ -29,6 +34,7 @@ const initState = {
 };
 
 const host = API_SERVER_HOST;
+const s3_prefix = API_S3_HOST;
 
 const ListComponent = () => {
   const { page, size, refresh, moveToList, moveToRead } = useCustomMove();
@@ -94,7 +100,7 @@ const ListComponent = () => {
             >
               <CardMedia
                 component="img"
-                image={`${host}/api/todo/view/s_${todo.imageFile}`}
+                image={`${s3_prefix}todo/s_${todo.imageFile ?? "default.jpeg"}`}
                 alt="todo"
                 sx={{
                   height: 100,
